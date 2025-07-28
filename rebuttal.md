@@ -73,6 +73,7 @@ We also analyzed the primary contributors to LaCoT’s training time. The most t
 |----------------------	|------------------	|------------------	|-------------------	|
 | Exploration          	| 960s             	| 880s             	| 880s              	|
 | Reward approximation 	| 380s             	| 270s             	| 70s               	|
+
 Where N is the number of explored trajectories.
 
 These results show that while LaCoT introduces additional computational cost due to exploration and token-level reasoning supervision, it remains feasible for practical training pipelines and leads to notable performance gains.
@@ -154,6 +155,7 @@ While $\lambda$=1 would give the most accurate, fully-sampled reward (i.e., no i
 |----------------------	|---	|------------------	|------------------	|-------------------	|
 | Exploration          	| 960s | 960s             	| 880s             	| 880s              	|
 | Reward approximation 	| 3040s  |380s             	| 270s             	| 70s               	|
+
 This trade-off between accuracy and efficiency motivated our use of approximated rewards based on interpolated steps, which still retain strong performance while being computationally viable.
 
 [1] Fanqing Meng, Jin Wang, Chuanhao Li, Quanfeng Lu, Hao Tian, Jiaqi Liao, Xizhou Zhu, Jifeng Dai, Yu Qiao, Ping Luo, et al. Mmiu: Multimodal multi-image understanding for evaluating large vision-language models. arXiv preprint arXiv:2408.02718, 2024
