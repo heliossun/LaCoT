@@ -20,9 +20,9 @@ LaCoT introduces a reward model, but its overall computational overhead is lower
 
 > **`Q2-1`**: The proposed method is evaluated only on mathematical reasoning tasks. The generalizability to other domains remains unclear.
 
-To assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual reasoning benchmarks: **MMMU^pro^**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA.
+To assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual reasoning benchmarks: **MMMU<sup>pro</sup>**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA.
 
-| Method        	| MMMU^pro^ 	| MMVet 	| MME  	| 
+| Method        	| MMMU<sup>pro</sup> 	| MMVet 	| MME  	| 
 |---------------	|-----------	|-------	|------	|
 | InternVL2-4B  	| -         	| 55.7  	| 2046 	|		
 | Qwen2.5-VL-3B 	|      22.4     	|    61.4   	|    2134  	|		
@@ -39,7 +39,7 @@ These results demonstrate that LaCoT consistently improves performance across di
 
 We agree that rationale sampling introduces additional inference cost, and we address this by using mini-batching (with batch size k=5) to generate N rationales in N/k forward passes. Below, we report the per-sample inference time (reasoning + answering) and corresponding average performance of different inference-time scaling approach on MathVista and MathVerse:
 
-| #Rationals             	| 1   	| 5    	| 10   	| Performance 	|
+| #Rationals (N)           	| 1   	| 5    	| 10   	| Performance 	|
 |------------------------	|-----	|------	|------	|-------------	|
 | Greedy                	| 32s 	| -    	| -    	| 50.7        	|
 | BoN                    	| -   	| 25s  	| 60s  	| 51.2        	|
