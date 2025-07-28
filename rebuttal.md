@@ -151,10 +151,12 @@ Theoretically, the approximation error decays as $\mathcal{O}(\lambda^{2})$; cho
 
 While $\lambda$=1 would give the most accurate, fully-sampled reward (i.e., no interpolation), it is computationally infeasible. As shown below, computing token-wise rewards with $\lambda$=1 takes **~50 minutes per sample** for long visual CoT sequences. This would require **~400 hours for  training 1 epoch** on a 3k-sample dataset with our current computational resources.
 
-| Running-Time         	| E=6, $\lambda$=1 | E=6, $\lambda$=8 	| E=4, $\lambda$=8 	| E=4, $\lambda$=32 	|
+| Running-Time         	| N=6, $\lambda$=1 | N=6, $\lambda$=8 	| N=4, $\lambda$=8 	| N=4, $\lambda$=32 	|
 |----------------------	|---	|------------------	|------------------	|-------------------	|
 | Exploration          	| 960s | 960s             	| 880s             	| 880s              	|
 | Reward approximation 	| 3040s  |380s             	| 270s             	| 70s               	|
+
+N is the number of on-policy sampling during training.
 
 This trade-off between accuracy and efficiency motivated our use of approximated rewards based on interpolated steps, which still retain strong performance while being computationally viable.
 
