@@ -94,9 +94,9 @@ We provide comparison results of Best-of-N (BoN) approach below. Specifically, d
 
 | Method        	| MathVerse 	| MathVista 	| MMMU 	| MMVet 	|
 |---------------	|:---------:	|:---------:	|:----:	|:-----:	|
-| 3B w/ BoN         	|       	|    57.1   	| 44.7 	|  67.1 	|
+| 3B w/ BoN         	|   21.2    	|    57.1   	| 44.7 	|  67.1 	|
 | 3B w/ BiN (ours)       	|    **40.0**   	|    **63.2**   	| **48.8** 	|  **69.6** 	|
-| 7B w/ BoN         	|      	|    62.2   	| 47.3 	|  71.2 	|
+| 7B w/ BoN         	|   26.5   	|    62.2   	| 47.3 	|  71.2 	|
 | 7B w/ BiN (ours)        	|    **39.7**   	|    **68.4**   	| **54.9** 	|  **74.2** 	|
 
 We set number of candidates N={5, 10} for BoN and BiN, and we report the highest score of each method.
