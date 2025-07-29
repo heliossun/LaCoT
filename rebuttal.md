@@ -1,9 +1,19 @@
 
 > **`Q1-1`**: The main concern lies in the experimental section which I find is a bit thin.
 
-We provide new experimental results on three diverse domain visual tasks to asses LaCoT's general visual reasoning ability.
+To assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual reasoning benchmarks: **MMMU<sup>pro</sup>**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA.
 
+| Method        	| MMMU<sup>pro</sup> 	| MMVet 	| MME  	| 
+|---------------	|-----------	|-------	|------	|
+| InternVL2-4B  	| -         	| 55.7  	| 2046 	|		
+| Qwen2.5-VL-3B 	|      22.4     	|    61.4   	|    2134  	|		
+| LaCoT-Qwen-3B (ours)	|   **28.9**       	| **69.6**  	|  **2208**    	|		
+| InternVL2-8B  	| 25.4      	| 60.0  	| 2210 	|		
+| Qwen2.5-VL-7B 	| **34.6**      	| 70.5  	| 2333 	|		
+| R1-Onevision  	| 28.2      	| 71.1  	|  1111    	|		
+| LaCoT-Qwen-7B (ours) 	|       32.1    	| **74.2**  	| **2372** 	|		
 
+These results demonstrate that LaCoT consistently improves performance across different domains and model scales, suggesting strong generalization beyond mathematical reasoning tasks.
 
 
 > **`Q1-2`**:   I wonder if the comparison with GRPO in Table 1 is fair, as LaCoT uses a different training set as R1-OneVision.
@@ -28,9 +38,9 @@ To assess the generalizability of **LaCoT** beyond mathematical reasoning, we co
 | Qwen2.5-VL-3B 	|      22.4     	|    61.4   	|    2134  	|		
 | LaCoT-Qwen-3B (ours)	|   **28.9**       	| **69.6**  	|  **2208**    	|		
 | InternVL2-8B  	| 25.4      	| 60.0  	| 2210 	|		
-| Qwen2.5-VL-7B 	| 34.6      	| 70.5  	| 2333 	|		
+| Qwen2.5-VL-7B 	| **34.6**      	| 70.5  	| 2333 	|		
 | R1-Onevision  	| 28.2      	| 71.1  	|  1111    	|		
-| LaCoT-Qwen-7B (ours) 	|           	| **74.2**  	| **2372** 	|		
+| LaCoT-Qwen-7B (ours) 	|       32.1    	| **74.2**  	| **2372** 	|		
 
 These results demonstrate that LaCoT consistently improves performance across different domains and model scales, suggesting strong generalization beyond mathematical reasoning tasks.
 
