@@ -18,7 +18,7 @@ These results demonstrate that LaCoT consistently improves performance across di
 
 > **`Q1-2`**:   I wonder if the comparison with GRPO in Table 1 is fair, as LaCoT uses a different training set as R1-OneVision.
 
-For the SFT stage, approximately 60% of our training data overlaps with that used by R1-OneVision, while the remaining 40% is drawn from LLaVA-CoT to mitigate data bias and enhance reasoning diversity. Importantly, in the RL stage—which we consider the most critical for performance—R1-OneVision (GRPO) utilizes 10k newly collected samples, whereas LaCoT reuses only 3k samples from the SFT stage without additional data collection. This indicates that LaCoT achieves strong performance with significantly less RL supervision, highlighting its efficiency and generalization.
+For the SFT stage, approximately 60% of our training data overlaps with that used by R1-OneVision, while the remaining 40% is drawn from LLaVA-CoT to mitigate data bias and enhance reasoning diversity. Importantly, in the RL stage—which we consider the most critical for performance—R1-OneVision (GRPO) utilizes 10k newly collected samples. In contrast, LaCoT reuses only 3k samples from the SFT stage without additional data collection, indicating that LaCoT achieves strong performance with significantly less RL supervision, which highlights its efficiency and generalization.
     
 > **`Q1-3`**: The performance of GRPO in Table 2 is a bit strange, as is contradictory with most recent papers observation. My empirical experience also indicates that GRPO works better than SFT especially in terms of generalization. The details of this ablation is not provided and no analysis on why this abnormal behavior happens.
 
@@ -58,11 +58,11 @@ We agree that rationale sampling introduces additional inference cost, and we ad
 
 For stage-wise beam search [1], we use the official implementation provided by LLaVA-CoT-11B [1].
 
-As shown in the table, BiN achieves consistently stronger performance even with modest increases in inference time. Compared to other multi-rationale baselines, LaCoT strikes a favorable balance between computational cost and reasoning reliability, improving both the trustworthiness of rationales and final answer accuracy.
+As shown in the table, BiN achieves consistently stronger performance even with modest increases in inference time. Compared to other multi-rationale baselines, LaCoT strikes a favorable balance between computational cost and reasoning reliability, thereby improving both the trustworthiness of rationales and the accuracy of final answers.
 
 > **`Q2-3`**:  How sensitive is the performance to the choice of lambda for approximating reward?
 
-We examined the sensitivity of performance to the choice of $\lambda$ in reward approximation by comparing settings with $\lambda$=8 and $\lambda$=32 during training. Our observations show that although the approximated rewards differ slightly at the beginning, they quickly converge and become nearly identical after around 250 training steps. This suggests that LaCoT is relatively robust to the choice of $\lambda$ within a reasonable range.
+We examined the sensitivity of performance to the choice of $\lambda$ in reward approximation by comparing settings with $\lambda$=8 and $\lambda$=32 during training. Our observations indicate that although the approximated rewards differ slightly initially, they converge quickly and become nearly identical after approximately 250 training steps, suggesting that LaCoT is relatively robust to the choice of $\lambda$ within a reasonable range.
  
 > **`Q2-4`**: What are training and inference times compared to baselines (SFT, GRPO)?
 
@@ -115,7 +115,7 @@ We set number of candidates N={5, 10} for BoN and BiN, and we report the highest
 
 To the best of our knowledge, our work is the first to apply amortized variational inference to latent visual reasoning, where reasoning steps are learned and inferred in a latent space conditioned on both visual and textual input.
 
-While there have been recent efforts exploring latent-space reasoning in large language models (LLMs), such as [1] and [2], these works focus on purely textual tasks and do not incorporate multimodal inputs or vision-language grounding. We acknowledge the importance of positioning our work in the broader context of latent reasoning, and we will include a more detailed comparison with these methods in the final version of the paper due to rebuttal time constraints.
+While recent efforts have explored latent-space reasoning in large language models (LLMs), such as [1] and [2], these works focus solely on textual tasks and do not incorporate multimodal inputs or vision-language grounding. We acknowledge the importance of evaluating our work within the broader context of latent reasoning. Due to rebuttal time constraints, we will include a more detailed comparison with these methods in the final version of the paper.
 
 [1] Hao, S., Sukhbaatar, S., Su, D., Li, X., Hu, Z., Weston, J.E., & Tian, Y. (2024). Training Large Language Models to Reason in a Continuous Latent Space. _ArXiv, abs/2412.06769_.
 [2] Geiping, J., McLeish, S., Jain, N., Kirchenbauer, J., Singh, S., Bartoldson, B.R., Kailkhura, B., Bhatele, A., & Goldstein, T. (2025). Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach. _ArXiv, abs/2502.05171_.
@@ -135,11 +135,11 @@ However, we were unable to include results on **MMIU**, as it involves multi-ima
 
 > **`Q4-3`**: I couldn't see where the reference rationales come from? Could you explain that? If it hasn't been included would it be worth briefly touching on this?
 
-Each training sample in our dataset consists of a tuple {image, query, CoT, answer}, where the CoT (Chain-of-Thought) serves as the reference rationale. These rationales are generated by powerful teacher models such as **GPT-4o** or **Deepseek-R1**, depending on the data source. We will clarify this detail in the revised version of the paper for better transparency.
+Each training sample in our dataset consists of a tuple {image, query, CoT, answer}, where the CoT (Chain-of-Thought) serves as the reference rationale for the answer. These rationales are generated by powerful teacher models such as **GPT-4o** or **Deepseek-R1**, depending on the data source. We will clarify this detail in the revised version of the paper for better transparency.
 
 > **`Q4-4`**: Did you have any issues with hallucinations in your rationales during inference? Presumably these would be more problematic as the sample size is lowered in BiN?
 
-We did observe some hallucination issues in generated rationales when sample size N=1,  where BiN can occasionally produce incorrect or misleading reasoning steps on datasets **MMMU**.
+We observed some hallucination issues in generated rationales when the sample size N=1, where BiN can occasionally produce incorrect or misleading reasoning steps on the **MMMU**dataset.
 
 To assess this, we used **one-shot reasoning** as a baseline and varied the number of sampled rationales N during inference. As shown below, increasing N from 1 to 5 significantly mitigates hallucination and improves answer accuracy:
 
@@ -157,9 +157,9 @@ These results suggest that **hallucination can indeed be more pronounced at smal
 
 > **`Q4-5`**: When doing token level reward approximation I was a bit uncertain where rewards we actually be sampled vs. interpolated from Eq. 4, can you expand on this a bit?
 
-Theoretically, the approximation error decays as $\mathcal{O}(\lambda^{2})$; choosing $\lambda$ sufficiently small keeps it arbitrarily close to~$0$. Our empirical results show that $\lambda$=8 has similar performance with $\lambda$=16. 
+Theoretically, the approximation error decays as $\mathcal{O}(\lambda^{2})$; choosing $\lambda$ sufficiently small keeps it arbitrarily close to~$0$. Our empirical results show that $\lambda$=8 has similar performance to $\lambda$=16. 
 
-While $\lambda$=1 would give the most accurate, fully-sampled reward (i.e., no interpolation), it is computationally infeasible. As shown below, computing token-wise rewards with $\lambda$=1 takes **~50 minutes per sample** for long visual CoT sequences. This would require **~400 hours for  training 1 epoch** on a 3k-sample dataset with our current computational resources.
+While $\lambda$=1 would give the most accurate, fully-sampled reward (i.e., no interpolation), it is computationally infeasible. As shown below, computing token-wise rewards with $\lambda$=1 takes **~50 minutes per sample** for long visual CoT sequences. This would require **~400 hours of training for 1 epoch** on a 3k-sample dataset with our current computational resources.
 
 | Running-Time         	| N=6, $\lambda$=1 | N=6, $\lambda$=8 	| N=4, $\lambda$=8 	| N=4, $\lambda$=32 	|
 |----------------------	|---	|------------------	|------------------	|-------------------	|
