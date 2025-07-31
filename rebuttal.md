@@ -1,8 +1,8 @@
 
-
+We thank the reviewer for their detailed comments. We address each of them below. 
 > **`W1-1`**: The main concern lies in the experimental section which I find is a bit thin.
 
-We conduct additional experiments on widely used benchmarks including **MMMU<sup>pro</sup>**, **MMVet**, and **MME**, where MMMU-Pro is a more robust version of MMMU, designed to more rigorously assess LVLMs' understanding and reasoning capabilities. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
+We conduct additional experiments on widely used benchmarks, including **MMMU<sup>pro</sup>**, **MMVet**, and **MME**, where MMMU-Pro is a more robust version of MMMU, designed to assess LVLMs' understanding and reasoning capabilities more rigorously. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
 
 
 
@@ -28,26 +28,28 @@ Our SFT data is comparable with R1-OneVision. However, in the RL stage—which w
     
 > **`W1-3`**: The performance of GRPO in Table 2 is a bit strange, as is contradictory with most recent papers observation. My empirical experience also indicates that GRPO works better than SFT especially in terms of generalization. The details of this ablation is not provided and no analysis on why this abnormal behavior happens.
 
-In Table 2, we compare the effectiveness of different training algorithms on 3k samples, using consistent hyperparameters across all methods (e.g., same batch size, base model, and learning rate). For GRPO and RGFN, we set the exploration number to 6 and sequence length to 700. While GRPO performs slight worse than SFT, we conjecture that GRPO is more sensitive to hyperparameters and requires more training data, which aligns with our observation in Table T1.
+In Table 2, we compare the effectiveness of different training algorithms on 3k samples, using consistent hyperparameters across all methods (e.g., same batch size, base model, and learning rate). For GRPO and RGFN (our approach), we set the exploration number to 6 and the sequence length to 700. While GRPO performs slightly worse than SFT, we think this is due to GRPO’s higher sensitivity to hyperparameters and its reliance on larger training data for stable generalization. This is also reflected in our previous experiments (R1-OneVision applies 10k training data), where its performance improves with more data.
 
 > **`Q1-1`**: Since LaCoT introduces an additional neural-based reward model, what would be the computational overhead compared to, e.g., GRPO?
 
 LaCoT introduces no additional GPU memory usage or data preprocessing overhead compared to GRPO during training. However, due to the token-level reward approximation, it does incur a higher computational cost in terms of runtime. Under identical experimental settings, LaCoT requires approximately **90 hours** of total training time, compared to **64 hours** for GRPO.
 
+
+We thank the reviewer for their detailed comments. We address each of them below. 
+
 > **`W2-1`**: The proposed method is evaluated only on mathematical reasoning tasks. The generalizability to other domains remains unclear.
 
-We initially followed the R1-OneVision baseline to evaluate LVLM reasoning performance on mathematical benchmarks. To further assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual understanding benchmarks: **MMMU<sup>pro</sup>**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
+We initially followed the R1-OneVision baseline to evaluate LVLM reasoning performance on mathematical benchmarks. To further assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual understanding benchmarks: **MMMU-pro**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
 
-| Method        	| MMMU<sup>pro</sup> 	| MMVet 	| MME  	| 
-|---------------	|-----------	|-------	|------	|
-| InternVL2-4B  	| -         	| 55.7  	| 2046 	|		
-| Qwen2.5-VL-3B 	|      22.4     	|    61.4   	|    2134  	|		
-| LaCoT-Qwen-3B (ours)	|   **28.9**       	| **69.6**  	|  **2208**    	|		
-| LLaVA-CoT-11B | - | 60.3| - |
-| InternVL2-8B  	| 25.4      	| 60.0  	| 2210 	|		
-| Qwen2.5-VL-7B 	| 34.6      	| 70.5  	| 2333 	|		
-| R1-Onevision  	| 28.2      	| 71.1  	|  1111    	|		
-| LaCoT-Qwen-7B (ours) 	|       **35.3**    	| **74.2**  	| **2372** 	|		
+| Method                | MMMU-pro | MMVet | MME  |
+|----------------------|----------|-------|------|
+| InternVL2-4B         | -        | 55.7  | 2046 |
+| Qwen2.5-VL-3B        | 22.4     | 61.4  | 2134 |
+| **LaCoT-Qwen-3B**    | **28.9** | **69.6** | **2208** |
+| InternVL2-8B         | 25.4     | 60.0  | 2210 |
+| Qwen2.5-VL-7B        | 34.6     | 70.5  | 2333 |
+| R1-Onevision         | 28.2     | 71.1  | 1111 |
+| **LaCoT-Qwen-7B**    | **35.3** | **74.2** | **2372** |	
 
 These results demonstrate that LaCoT consistently improves performance across different domains and model scales, suggesting strong generalization beyond mathematical reasoning tasks.
 
@@ -56,15 +58,19 @@ These results demonstrate that LaCoT consistently improves performance across di
 
 We agree that rationale sampling introduces additional inference cost, and we address this by using mini-batching (with batch size k=5) to generate N rationales in N/k forward passes. Below, we report the average per-sample inference time (reasoning + answering) and corresponding performance of different reasoning-LVLM on MathVista and MathVerse:
 
-| #Rationals (N)           	| 1   	| 5    	| 10   	| MathVista 	| MathVerse |
-|------------------------	|-----	|------	|------	|-------------	|-------------	|
-| LLaVA-CoT-11B	| -   	| 340s 	| 830s 	|       52.5  	| 22.6           |
-| R1-OneVision-7B                	| 32s 	| -    	| -    	|     64.1    	|    37.8            |
-| LaCoT-7B (ours)                   	| -   	| 30s  	| 65s  	|       **68.4**  	|      **39.7**      |
+| #Rationales (N)        | 1    | 5     | 10    | MathVista | MathVerse |
+|------------------------|------|-------|-------|-----------|-----------|
+| LLaVA-CoT-11B          | -    | 340s  | 830s  | 52.5      | 22.6      |
+| R1-OneVision-7B        | 32s  | -     | -     | 64.1      | 37.8      |
+| **LaCoT-7B (ours)**    | -    | 30s   | 65s   | **68.4**  | **39.7**  |
 
-Where LLaVA-CoT-11B utilizes stage-wise beam search [1] at inference-time.
 
-As shown in the table, LaCoT-7B achieves consistently stronger performance even with modest increases in inference time. Compared to other multi-rationale baselines, LaCoT strikes a favorable balance between computational cost and reasoning reliability, thereby improving both the trustworthiness of rationales and the accuracy of final answers.
+Where LLaVA-CoT-11B utilizes stage-wise beam search [1] at inference time.
+
+As shown in the table, LaCoT-7B consistently achieves stronger performance, even with modest increases in inference time. Compared to other multi-rationale baselines, LaCoT strikes a favorable balance between computational cost and reasoning reliability, thereby improving both the trustworthiness of rationales and the accuracy of final answers.
+
+
+
 
 > **`Q2-1`**:  How sensitive is the performance to the choice of lambda for approximating reward?
 
@@ -77,7 +83,7 @@ We report the total training time of fine-tuning Qwen2.5-VL using different obje
 |--------|---------------|-----------------------|------------|
 | SFT    | 1 hour        | 34s                   | 62.7       |
 | GRPO   | 64 hours      | 32s                   | 62.6       |
-| RGFN   | 90 hours      | 30s                   | 66.8 (N=5) |
+| RGFN (ours)   | 90 hours      | 30s                   | 66.8 (N=5) |
 
 
 Where N indicates the number of explored rationals of BiN.
@@ -91,25 +97,29 @@ These results demonstrate that while LaCoT incurs additional computational cost 
 > **`Q2-3`**: How does the proposed reference-guided filtering compare to other exploration strategies like epsilon-greedy or entropy-based exploration?
 
 
-We studied Epsilon-greedy in our early study, but we found that it doesn't scale well in training a reasoning LVLM. Specifically, the action space comprises the entire vocabulary (~50,000 tokens). In such a large space, most random actions are **semantically nonsensical** and low-reward, making exploration **inefficient** and often harmful. This results in **high-variance gradients** and **slow convergence**, leading to a catastrophic forgetting issue in our experiment.
+We studied Epsilon-greedy in our early study, but we found that it does not scale well in training a reasoning LVLM. Specifically, the action space comprises the entire vocabulary (~50,000 tokens). In such a large space, most random actions are **semantically nonsensical** and low-reward, making exploration **inefficient** and often harmful. This results in **high-variance gradients** and **slow convergence**, leading to a catastrophic forgetting issue in our experiment.
 
 Entropy-based exploration methods such as PPO rely on optimizing policy gradients to maximize expected rewards. However, these methods often struggle to align the learned policy with a target distribution, especially in complex reasoning tasks. In contrast, our approach builds on the GFlowNet framework, which is designed to sample from a target distribution via trajectory-level credit assignment, making it better suited for tasks requiring diverse and calibrated generation [2].
 
-Our reference-guided filtering further enhances the stability of on-policy exploration by selectively retaining high-quality trajectories, ensuring both efficiency and robustness during training. This strategy offers a more principled and controllable alternative to stochastic exploration heuristics.
+Our reference-guided filtering (RGFN) further enhances the stability of on-policy exploration by selectively retaining high-quality trajectories, ensuring both efficiency and robustness during training. This strategy offers a more principled and controllable alternative to stochastic exploration heuristics.
 
 [1] Xu, G., Jin, P., Li, H., Song, Y., Sun, L., & Yuan, L. LLaVA-CoT: Let Vision Language Models Reason Step-by-Step. ICCV 2025.
 [2] Hu, E.J., Jain, M., Elmoznino, E., Kaddar, Y., Lajoie, G., Bengio, Y., & Malkin, N. Amortizing intractable inference in large language models. ICLR 2024
 
+
+
+We thank the reviewer for their detailed comments. We address each of them below. 
 > **`W3-1`**:  Although the model is compared with SFT and GRPO results. Results on popular inference scaling approaches such as BofN etc. should also be compared with?
 
 We provide comparison results of Best-of-N (BoN) approach below. Specifically, during inference, we sample N rational-answer pairs using LaCoT. For each pair, we compute the length-normalized log-likelihood of the generated answer as reward, and then select the final answer corresponding to the highest reward. To ensure a fair comparison, we do not use any external reward model.
 
-| Method        	| MathVerse 	| MathVista 	| MMMU 	| MMVet 	|
-|---------------	|:---------:	|:---------:	|:----:	|:-----:	|
-| 3B w/ BofN         	|   21.2    	|    57.1   	| 44.7 	|  67.1 	|
-| 3B w/ BiN (ours)       	|    **40.0**   	|    **63.2**   	| **48.8** 	|  **69.6** 	|
-| 7B w/ BofN         	|   26.5   	|    62.2   	| 47.3 	|  71.2 	|
-| 7B w/ BiN (ours)        	|    **39.7**   	|    **68.4**   	| **54.9** 	|  **74.2** 	|
+| Method            | MathVerse | MathVista | MMMU  | MMVet |
+|------------------|:---------:|:---------:|:-----:|:-----:|
+| 3B w/ BofN        |   21.2    |   57.1    | 44.7  | 67.1  |
+| 3B w/ BiN (ours)  | **40.0**  | **63.2**  | **48.8** | **69.6** |
+| 7B w/ BofN        |   26.5    |   62.2    | 47.3  | 71.2  |
+| 7B w/ BiN (ours)  | **39.7**  | **68.4**  | **54.9** | **74.2** |
+
 
 We set number of candidates N={5, 10} for BoN and BiN, and we report the highest score of each method.
 
@@ -118,7 +128,7 @@ We set number of candidates N={5, 10} for BoN and BiN, and we report the highest
 
 To the best of our knowledge, our work is the first to apply amortized variational inference to latent visual reasoning with a long CoT chain, where reasoning steps are learned and inferred in a latent space conditioned on both visual and textual input.
 
-Previous works ([1] and [2]) focus solely on the textual domain, extending these techniques to the multimodal setting—particularly for long visual CoT—is nontrivial due to the need to model visual grounding and latent step-wise reasoning jointly.
+Previous works ([1] and [2]) focus solely on the textual domain, applying these methods for latent visual CoT is nontrivial due to long and structured multi-step reasoning.
 
 [1] Hao, S., Sukhbaatar, S., Su, D., Li, X., Hu, Z., Weston, J.E., & Tian, Y. (2024). Training Large Language Models to Reason in a Continuous Latent Space. _ArXiv, abs/2412.06769_.
 
@@ -126,22 +136,31 @@ Previous works ([1] and [2]) focus solely on the textual domain, extending these
 
 
 
+We thank the reviewer for their detailed comments. We address each of them below. 
+> **`W4-1`**: Perhaps detailed at the beginning of section 3 with the potential inclusion of a new figure and that underlines the key fundamental strengths of the approach that you propose...; Then in Section 3.3 I see the approach in general however I think it could benefit from a bit more detail in the figures and main text. ...; One nitpick, In the intro on the second to last paragraph you mention three points that overlap with your main contributions. Could you simply include this all under one list? It may make things a little clearer.
 
-> **`W4-1`**: Perhaps detailed at the beginning of section 3 with the potential inclusion of a new figure and that underlines the key fundamental strengths of the approach that you propose...
+- We will add a figure at the beginning of section 3 to clearly show our motivation.
+- Figure 4 visualizes Equation 8, illustrating how BiN performs Bayesian marginalization over latent chain-of-thought trajectories Z to approximate the likelihood of the answer P(Y|X). We agree that additional detail would improve clarity, and we will revise both the figure and the accompanying explanation in the final version to better highlight the role of latent reasoning and its connection to our overall inference pipeline.
+- We will revise the introduction and consolidate the overlapping points into a unified contribution list to improve clarity and readability in the final version.
 
-We will add a figure at the beginning of section 3 to clearly show our motivation.
+> **`W4-2`**: Consider LaCoT on benchmark domains targeting decision making and acting responses (e.g., E3VQA[1], MMIU[2]) that rely on some scene understanding and reasoning from world priors.
 
->**`W4-2`**: Then in Section 3.3 I see the approach in general however I think it could benefit from a bit more detail in the figures and main text. ...
+We appreciate the suggestion. We attempt to evaluate on **MMIU**, but find that LaCoT and our baseline models (e.g., Qwen2.5-VL) struggle to generalize due to their limited training on single-image reasoning tasks. Regarding **E3VQA**, the dataset was not publicly available at the time of writing, which prevented us from conducting a fair comparison.
 
-Figure 4 visualizes Equation 8, illustrating how BiN performs Bayesian marginalization over latent chain-of-thought trajectories Z to approximate the likelihood of the answer P(Y|X). We agree that additional detail would improve clarity, and we will revise both the figure and the accompanying explanation in the final version to better highlight the role of latent reasoning and its connection to our overall inference pipeline.
+Although we are unable to follow the reviewer's suggestion, we conducted additional experiments on three other visual understanding benchmarks: **MMMU-pro**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
 
-> **`W4-3`**:One nitpick, In the intro on the second to last paragraph you mention three points that overlap with your main contributions. Could you simply include this all under one list? It may make things a little clearer.
+| Method                | MMMU-pro | MMVet | MME  |
+|----------------------|----------|-------|------|
+| InternVL2-4B         | -        | 55.7  | 2046 |
+| Qwen2.5-VL-3B        | 22.4     | 61.4  | 2134 |
+| **LaCoT-Qwen-3B**    | **28.9** | **69.6** | **2208** |
+| InternVL2-8B         | 25.4     | 60.0  | 2210 |
+| Qwen2.5-VL-7B        | 34.6     | 70.5  | 2333 |
+| R1-Onevision         | 28.2     | 71.1  | 1111 |
+| **LaCoT-Qwen-7B**    | **35.3** | **74.2** | **2372** |		
 
-We will revise the introduction and consolidate the overlapping points into a unified contribution list to improve clarity and readability in the final version.
+These results demonstrate that LaCoT consistently improves performance across different domains and model scales, suggesting strong generalization beyond mathematical reasoning tasks.
 
-> **`W4-4`**: Consider LaCoT on benchmark domains targeting decision making and acting responses (e.g. E3VQA[1], MMIU[2]) that rely on some scene understanding and reasoning from world priors.
-
-We attempt to evaluate on **MMIU**, but find that LaCoT and our baseline models (e.g., Qwen2.5-VL) struggle to generalize due to their limited training on single-image reasoning tasks. Regarding **E3VQA**, the dataset was not publicly available at the time of writing, which prevented us from conducting a fair comparison.
 
 > **`Q4-1`**: I couldn't see where the reference rationales come from? Could you explain that? If it hasn't been included would it be worth briefly touching on this?
 
@@ -167,8 +186,8 @@ These results suggest that **hallucination can indeed be more pronounced at smal
 
 > **`Q4-3`**: When doing token level reward approximation I was a bit uncertain where rewards we actually be sampled vs. interpolated from Eq. 4, can you expand on this a bit?
 
-The trade-off between accuracy and efficiency motivated our use of approximated rewards based on interpolated steps, which still retain strong performance while being computationally viable.
-While $\lambda$=1 (i.e., no interpolation) would give slightly better performance, it is computationally infeasible. Following our current training setting, computing token-wise rewards with $\lambda$=1 takes **~50 minutes per sample (long visual CoT sequences)**. This requires **~400 hours of training for 1 epoch** on a 3k-sample dataset on 8*80G GPUs.
+We compute the actual reward for every $\lambda$ steps, and apply linear interpolation to approximate the intermediate token-level rewards.
+This design reflects a trade-off between accuracy and efficiency: while $\lambda$=1 (i.e., no interpolation) would yield slightly better performance, it is computationally prohibitive in practice. Under our current setting, computing token-wise rewards with $\lambda$=1 takes **~50 minutes per sample due to the long visual CoT sequences**. This requires **~400 hours of training for one epoch** on a 3k-sample dataset using 8*80G GPUs. Thus, our interpolated approximation provides a practical and effective alternative that maintains strong performance while significantly reducing training time.
 
 
 
