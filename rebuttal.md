@@ -28,15 +28,15 @@ Our SFT data is comparable with R1-OneVision. However, in the RL stage—which w
     
 > **`W1-3`**: The performance of GRPO in Table 2 is a bit strange, as is contradictory with most recent papers observation. My empirical experience also indicates that GRPO works better than SFT especially in terms of generalization. The details of this ablation is not provided and no analysis on why this abnormal behavior happens.
 
-In Table 2,  we study the effectiveness of different training algorithms for reasoning on 3k data samples. We maintain a consistent hyperparameter setting for all methods, including batch size, base model, and learning rate. For GRPO and RGFN, we set exploration number to 6 and sequence length to 700. The empirical results show that GRPO has slight worse performance than SFT, we conjecture that GRPO is more sensitive to hyperparameters and requires more training data, which aligns with our observation in Table T1.
+In Table 2, we compare the effectiveness of different training algorithms on 3k samples, using consistent hyperparameters across all methods (e.g., same batch size, base model, and learning rate). For GRPO and RGFN, we set the exploration number to 6 and sequence length to 700. While GRPO performs slight worse than SFT, we conjecture that GRPO is more sensitive to hyperparameters and requires more training data, which aligns with our observation in Table T1.
 
 > **`Q1-1`**: Since LaCoT introduces an additional neural-based reward model, what would be the computational overhead compared to, e.g., GRPO?
 
-During training, LaCoT introduces no additional GPU memory or data preprocessing overhead compared to GRPO. However, due to the token-level reward approximation, LaCoT incurs higher computational cost in terms of runtime. Under the same experimental settings, LaCoT requires approximately 90 hours of total training time, while GRPO takes around 64 hours.
+LaCoT introduces no additional GPU memory usage or data preprocessing overhead compared to GRPO during training. However, due to the token-level reward approximation, it does incur a higher computational cost in terms of runtime. Under identical experimental settings, LaCoT requires approximately **90 hours** of total training time, compared to **64 hours** for GRPO.
 
 > **`W2-1`**: The proposed method is evaluated only on mathematical reasoning tasks. The generalizability to other domains remains unclear.
 
-We followed the baseline (R1-OneVision) to evaluate LVLM reasoning on mathematic benchmarks. To further assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual understanding benchmarks: **MMMU<sup>pro</sup>**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
+We initially followed the R1-OneVision baseline to evaluate LVLM reasoning performance on mathematical benchmarks. To further assess the generalizability of **LaCoT** beyond mathematical reasoning, we conducted additional experiments on three diverse visual understanding benchmarks: **MMMU<sup>pro</sup>**, **MMVet**, and **MME**. These benchmarks cover a broad range of tasks, including visual commonsense, fine-grained recognition, and multi-choice QA. 
 
 | Method        	| MMMU<sup>pro</sup> 	| MMVet 	| MME  	| 
 |---------------	|-----------	|-------	|------	|
@@ -100,7 +100,7 @@ Our reference-guided filtering further enhances the stability of on-policy explo
 [1] Xu, G., Jin, P., Li, H., Song, Y., Sun, L., & Yuan, L. LLaVA-CoT: Let Vision Language Models Reason Step-by-Step. ICCV 2025.
 [2] Hu, E.J., Jain, M., Elmoznino, E., Kaddar, Y., Lajoie, G., Bengio, Y., & Malkin, N. Amortizing intractable inference in large language models. ICLR 2024
 
-> **`Q3-1`**:  Although the model is compared with SFT and GRPO results. Results on popular inference scaling approaches such as BofN etc. should also be compared with?
+> **`W3-1`**:  Although the model is compared with SFT and GRPO results. Results on popular inference scaling approaches such as BofN etc. should also be compared with?
 
 We provide comparison results of Best-of-N (BoN) approach below. Specifically, during inference, we sample N rational-answer pairs using LaCoT. For each pair, we compute the length-normalized log-likelihood of the generated answer as reward, and then select the final answer corresponding to the highest reward. To ensure a fair comparison, we do not use any external reward model.
 
@@ -113,7 +113,7 @@ We provide comparison results of Best-of-N (BoN) approach below. Specifically, d
 
 We set number of candidates N={5, 10} for BoN and BiN, and we report the highest score of each method.
 
-> **`Q3-2`**: Is this approach the first to adopt Amortizing Variational Inference method, more comparison with related work is needed. Also comparison with existing latent space reasoning approaches?
+> **`W3-2`**: Is this approach the first to adopt Amortizing Variational Inference method, more comparison with related work is needed. Also comparison with existing latent space reasoning approaches?
 
 
 To the best of our knowledge, our work is the first to apply amortized variational inference to latent visual reasoning with a long CoT chain, where reasoning steps are learned and inferred in a latent space conditioned on both visual and textual input.
