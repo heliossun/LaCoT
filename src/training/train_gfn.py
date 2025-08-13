@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,"/mnt/disks/new-disk/Qwen2-VL-gfn/src")
+sys.path.insert(0,"/nfs/gsun3/qwen2.5-laCoT/src")
 
 import os
 import torch

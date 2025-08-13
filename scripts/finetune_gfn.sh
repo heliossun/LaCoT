@@ -19,14 +19,14 @@ deepspeed src/training/train_gfn.py \
     --lora_enable True \
     --use_dora False \
     --lora_namespan_exclude "['lm_head', 'embed_tokens']" \
-    --lora_rank 64 \
-    --lora_alpha 128 \
+    --lora_rank 32 \
+    --lora_alpha 64 \
     --lora_dropout 0.05 \
     --num_lora_modules -1 \
     --deepspeed scripts/zero3.json \
     --model_id $MODEL_NAME \
-    --data_path /mnt/disks/new-disk/data/gfn-3k.json\
-    --image_folder /mnt/disks/new-disk/data/cot \
+    --data_path /nfs/gsun3/data/gfn-3k.json\
+    --image_folder /nfs/gsun3/data/cot \
     --remove_unused_columns False \
     --freeze_vision_tower True \
     --freeze_llm True \
@@ -34,13 +34,13 @@ deepspeed src/training/train_gfn.py \
     --bf16 True \
     --fp16 False \
     --disable_flash_attn2 False \
-    --output_dir output/Qwen2.5-gfn-7b-lora-v1.8-1epo \
+    --output_dir output/Qwen2.5-gfn-7b-lora-rebuttal-1epo \
     --num_train_epochs 1 \
     --per_device_train_batch_size $BATCH_PER_DEVICE \
     --gradient_accumulation_steps $GRAD_ACCUM_STEPS \
     --image_min_pixels $((256 * 28 * 28)) \
     --image_max_pixels $((1280 * 28 * 28)) \
-    --learning_rate 1e-5 \
+    --learning_rate 5e-5 \
     --merger_lr 1e-5 \
     --vision_lr 2e-6 \
     --weight_decay 0.05 \
@@ -55,10 +55,10 @@ deepspeed src/training/train_gfn.py \
     --save_steps 20000 \
     --save_total_limit 10 \
     --dataloader_num_workers 16\
-    --skip_reward_step 8 \
+    --skip_reward_step 16 \
     --explore_nums 6 \
-    --explore_min_bs 6 \
-    --rat_max_len 700 \
+    --explore_min_bs 2 \
+    --rat_max_len 1024 \
     --rat_min_len 64 \
     --reward_tolarent_start 1.5 \
     --reward_tolarent_end 1 \

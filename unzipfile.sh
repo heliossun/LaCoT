@@ -6,14 +6,14 @@
 #huggingface-cli download ShareGPTVideo/train_video_and_instruction  --include "train_300k/*" --repo-type dataset --local-dir /mnt/disks/new-disk/LVLM-reasoning/data/videos/train_300k
 
 
-# for z in *.zip
-# do 
-#     unzip -q "$z" -d "./m4-instruct"; 
-#     rm "$z"
-# done
-
-video_zip_dir=videos/train_300k
-for chunk_path in "$video_zip_dir"/chunk_*; do
-    tar -xzf ${chunk_path} -C ./sharegptvideo
-    rm "$chunk_path"
+for z in data/data/*.zip
+do 
+    unzip -q "$z" -d "data/InternVL-Chat-V1-2-SFT-Data"; 
+    rm "$z"
 done
+
+# video_zip_dir=videos/train_300k
+# for chunk_path in "$video_zip_dir"/chunk_*; do
+#     tar -xzf ${chunk_path} -C ./sharegptvideo
+#     rm "$chunk_path"
+# done

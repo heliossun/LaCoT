@@ -25,7 +25,7 @@ GRAD_ACCUM_STEPS=1
     --num_lora_modules -1 \
     --deepspeed scripts/zero2.json \
     --model_id $MODEL_NAME \
-    --data_path /home/hhua/guohao/data/instruct/gfn-10k.json \
+    --data_path /home/hhua/guohao/data/instruct/gfn-3k.json \
     --image_folder /home/hhua/guohao/data/cot \
     --remove_unused_columns False \
     --freeze_vision_tower True \

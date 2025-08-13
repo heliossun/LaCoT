@@ -3,7 +3,7 @@
 # You can use 2B instead of 7B
 # MODEL_NAME="Qwen/Qwen2-VL-7B-Instruct"
 # MODEL_NAME="Qwen/Qwen2-VL-2B-Instruct"
-MODEL_NAME="Qwen/Qwen2.5-VL-3B-Instruct"
+MODEL_NAME="Qwen/Qwen2.5-VL-7B-Instruct"
 # MODEL_NAME="Qwen/Qwen2.5-VL-7B-Instruct"
 
 GLOBAL_BATCH_SIZE=128
@@ -13,12 +13,12 @@ GRAD_ACCUM_STEPS=1
 
 export PYTHONPATH=src:$PYTHONPATH
 
-deepspeed --include="localhost:1" src/training/train.py \
+deepspeed src/training/train.py \
     --use_liger True \
     --deepspeed scripts/zero3_offload.json \
     --model_id $MODEL_NAME \
-    --data_path /guohao/data/asl/sentence_level_train.json \
-    --image_folder /guohao/data/asl/new_train_frames \
+    --data_path /nfs/gsun3/data/gfn-3k.json \
+    --image_folder /nfs/gsun3/data/cot  \
     --remove_unused_columns False \
     --freeze_vision_tower False \
     --freeze_llm False \
